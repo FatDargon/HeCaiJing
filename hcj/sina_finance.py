@@ -7,11 +7,15 @@ Created on 2017-9-17
 from tools.GetSoup import *
 from dateutil import parser
 import re
+import jieba
+import jieba.posseg
+import jieba.analyse
 url = 'https://live.sina.com.cn/zt/f/v/finance/globalnews1'
-def sina_finance(url):
+def sina_finance(url,name):
+    name = name.decode('utf-8')
     big_data=[]
     soup = Soup(url,'utf-8').get_soup()
-    news_list = soup.find_all(attrs={"data-nick":'fin_图文直播'},limit=100)
+    news_list = soup.find_all(attrs={"data-nick":'fin_图文直播'},limit=1)
     for news in news_list:
 #         print news.get_text(strip = True)
         time_str = news.find('p',class_='bd_i_time_c').get_text(strip = True)
@@ -23,12 +27,12 @@ def sina_finance(url):
 #         print content
         try:
             news_source_tmp = re.search(u'（.+）', content).group()
-            news_source =re.sub(u'[（）]', '', news_source_tmp)
+            news_source =re.sub(u'[（）]', u'', news_source_tmp)
 #             print 'news_source\t'+news_source
             content = re.sub(u'（.+）','',content)
         except:
 #             print 'news_source\tnone'
-            news_source = ''
+            news_source = u'无'
         try:
             title_tmp = re.search(u'【.+】', content).group()
             title = re.sub(u'[【】]', '', title_tmp)
@@ -36,19 +40,25 @@ def sina_finance(url):
             text = re.sub(title_tmp, '', content)
 #             print 'text\t'+text
         except:
-            title = ''
+            title = u'无'
             text = content
 #             print "title\tnone"
 #             print 'title\t'+content
+        tags = jieba.analyse.extract_tags(content,topK=3, withWeight=False,allowPOS=('ns', 'n'))
+#         for x, w in jieba.analyse.extract_tags(content, withWeight=True):
+#             print('%s %s' % (x, w))
+#             exit()
+        keywords = u'/'.join(tags)
+#         print keywords
         small_data = {
             'title':title,
             'author':news_source,
             'time':time,
-            'source':'sina finance',#sina finance
-            'type':'',
-            'keywords':'',
-            'view':'',
-            'score':'',     
+            'source':name,#sina finance
+            'type':'1',
+            'keywords':keywords,
+            'viewer':'0',
+            'score':'0',     
             'content':text   
         }
         big_data.append(small_data) 
@@ -59,7 +69,7 @@ def sina_finance(url):
             'source':'',#sina finance
             'type':'',
             'keywords':'',
-            'view':'',
+            'viewer':'',
             'score':'',
             'content':''   
         }
