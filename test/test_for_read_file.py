@@ -15,18 +15,18 @@ obj = read_file()
 url = obj[0]['source_url']
 name = obj[0]['source_name']
 print url
-# ans= sina_finance(url,name)
-ans =[{
-            'title':"title",
-            'author':"news_source",
-            'time':now,
-            'source':"name",#sina finance
-            'type':'1',
-            'keywords':"keywords",
-            'viewer':'0',
-            'score':'0',     
-            'content':u"發垃圾分類登記法"   
-        }]
+ans= sina_finance(url,name)
+# ans =[{
+#             'title':"title",
+#             'author':"news_source",
+#             'time':now,
+#             'source':"name",#sina finance
+#             'type':'1',
+#             'keywords':"keywords",
+#             'viewer':'0',
+#             'score':'0',     
+#             'content':u"發垃圾分類登記法"   
+#         }]
 cur = ToMysql()
 cur.insert_list(ans)
 cur.commit()

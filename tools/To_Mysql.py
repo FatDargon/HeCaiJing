@@ -25,7 +25,6 @@ class ToMysql():
         try: 
             self.cur.execute("set names utf8") 
             n=self.cur.execute(sql)  
-            print n
             return n  
         except MySQLdb.Error as e:  
             print("Mysql Error:%s\nSQL:%s" %(e,sql))  
@@ -47,7 +46,7 @@ class ToMysql():
             d.append(_d)  
         return d  
     def qu_chong(self,p_data,p_table_name ='hcj'):
-        print p_data
+#         print p_data
         tpye = p_data['type']
         title = p_data['title']
         content = p_data['content']
@@ -56,8 +55,8 @@ class ToMysql():
             sql_for_qu_chong = "SELECT `id` FROM `"+p_table_name+"` WHERE `content` = '"+content+"'"
         else:
             sql_for_qu_chong = "SELECT `id` FROM `"+p_table_name+"` WHERE `title` = '"+title+"'"
-        print sql_for_qu_chong
-        print type(sql_for_qu_chong)
+#         print sql_for_qu_chong
+#         print type(sql_for_qu_chong)
         result = self.queryRow(sql_for_qu_chong)
         if(result):
             return False
@@ -66,6 +65,7 @@ class ToMysql():
 
     def insert(self,p_data,p_table_name ='hcj'): 
         if (self.qu_chong(p_data, p_table_name)):
+            print "new one"
             for key in p_data:
 #                 print type(p_data[key])  
                 p_data[key] = "'"+p_data[key]+"'"  
@@ -73,7 +73,7 @@ class ToMysql():
             value = ','.join(p_data.values())  
             real_sql = "INSERT INTO `" + p_table_name + "` (`" + key + "`) VALUES (" + value + ")"  
             #self.query("set names 'utf8'")  
-            print real_sql
+#             print real_sql
             return "insert result\t"+str(self.query(real_sql)) 
         else:
             return "Already exits"
