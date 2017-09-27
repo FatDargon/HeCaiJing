@@ -1,3 +1,7 @@
 eclipse.preferences.version=1
+encoding//test/buzhidaole.py=utf-8
+encoding//test/test_for_get_sql.py=utf-8
+encoding//test/test_mysql.py=utf-8
+encoding//tools/Get_SQL.py=utf-8
 encoding//tools/fix_text.py=utf-8
 encoding//tools/get_text.py=utf-8
