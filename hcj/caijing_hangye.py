@@ -17,13 +17,13 @@ import jieba
 import jieba.posseg
 import jieba.analyse
 from tools.Get_html import *
-#url = 'http://stock.caijing.com.cn/stockplate/'
+
 def caijing_hangye(url,name):
     name = name.decode('utf-8')
     big_data=[]
-    soup=get_html()
-#     soup = Soup(url,'utf-8').get_soup()
-    print soup
+#     soup=get_html(url,3,True,True)
+    soup = Soup(url,'').get_soup()
+#     print soup
     news_list = soup.find('div',class_='main_lt').ul.find_all('li')
     for news in news_list:
         print news.get_text(strip = True)

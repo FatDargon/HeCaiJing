@@ -16,6 +16,7 @@ url = obj[1]['source_url']
 name = obj[1]['source_name']
 print url
 ans= caijing_hangye(url,name)
+# ans= caijing_hangye(url,name)
 # ans =[{
 #             'title':"title",
 #             'author':"news_source",
