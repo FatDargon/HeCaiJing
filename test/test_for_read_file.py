@@ -16,6 +16,7 @@ url = obj[1]['source_url']
 name = obj[1]['source_name']
 print url
 ans= caijing_hangye(url,name)
+
 # ans= caijing_hangye(url,name)
 # ans =[{
 #             'title':"title",
@@ -28,10 +29,10 @@ ans= caijing_hangye(url,name)
 #             'score':'0',     
 #             'content':u"發垃圾分類登記法"   
 #         }]
-# cur = ToMysql()
-# cur.insert_list(ans)
-# cur.commit()
-# pretty_list(ans)
+cur = ToMysql()
+cur.insert_list(ans)
+cur.commit()
+pretty_list(ans)
 
 # for i in obj:
 #     url = i['source_url']

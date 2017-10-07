@@ -24,49 +24,42 @@ def caijing_hangye(url,name):
 #     soup=get_html(url,3,True,True)
     soup = Soup(url,'').get_soup()
 #     print soup
-    news_list = soup.find('div',class_='main_lt').ul.find_all('li')
+    news_list = soup.find('div',class_='main_lt').ul.find_all('li',limit = 2)
     for news in news_list:
-        print news.get_text(strip = True)
-        exit()
-        time_str = news.find('p',class_='bd_i_time_c').get_text(strip = True)
-        datetime_struct = parser.parse(time_str)
-        time = datetime_struct.strftime('%Y-%m-%d %H:%M:%S')
-#         print 'time \t'+datetime_struct.strftime('%Y-%m-%d %H:%M:%S') # 2016-12-22 13:58:59
-        content =  news.find('div',class_='bd_i_txt').get_text(strip = True)
-#         re_title =re.compile()
-#         print content
         try:
-            news_source_tmp = re.search(u'（.+）', content).group()
-            news_source =re.sub(u'[（）]', u'', news_source_tmp)
-#             print 'news_source\t'+news_source
-            content = re.sub(u'（.+）','',content)
+            title = news.div.a.get_text(strip = True)
+            new_url = news.div.a['href']        
         except:
-#             print 'news_source\tnone'
-            news_source = u'无'
+            title = ''
+            new_url = ''
+        author = news.find('div',class_='author').get_text(strip = True)   
+        new_soup = get_html(new_url,0,False,True)
+#         new_soup = Soup(url,'').get_soup()
+#         print new_soup
+#         exit()
+        text = new_soup.find('div', id='the_content').get_text(strip = True)
         try:
-            title_tmp = re.search(u'【.+】', content).group()
-            title = re.sub(u'[【】]', '', title_tmp)
-#             print 'title\t'+title
-            text = re.sub(title_tmp, '', content)
-#             print 'text\t'+text
+            kw_str = new_soup.find('div',class_='ar_keywords').find_all('a')
+            keywords = ''
+            for i in kw_str:
+                keywords = keywords+'/'+i.get_text(strip = True)
         except:
-            title = u'无'
-            text = content
-#             print "title\tnone"
-#             print 'title\t'+content
-        tags = jieba.analyse.extract_tags(content,topK=3, withWeight=False,allowPOS=('ns', 'n'))
-#         for x, w in jieba.analyse.extract_tags(content, withWeight=True):
-#             print('%s %s' % (x, w))
-#             exit()
-        keywords = u'/'.join(tags)
-#         print keywords
+            keywords = ''
+        try:
+            time_str = new_soup.find('span',id='pubtime_baidu').get_text(strip = True)
+            datetime_struct = parser.parse(time_str)
+            time = datetime_struct.strftime('%Y-%m-%d %H:%M:%S')
+        except:
+            now = datetime.now()
+            now = now.strftime("%Y-%m-%d %H:%M:%S")
+            time = now
         small_data = {
             'title':title,
-            'author':news_source,
+            'author':author,
             'time':time,
             'source':name,#sina finance
             'type':'1',
-            'keywords':keywords,
+            'keywords':keywords[1:],
             'viewer':'0',
             'score':'0',     
             'content':text   
