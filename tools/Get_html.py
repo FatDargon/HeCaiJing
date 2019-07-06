@@ -41,7 +41,7 @@ def get_html(url, flag, is_img=True, is_soup=False):
         if flag == 1:
             driver.find_element_by_xpath('//*[@id="filterByCity"]/li[6]/a').click()
         if flag == 3:
-            WebDriverWait(driver, 10).until(lambda the_driver: the_driver.find_element_by_xpath('''/html/body/div[3]/div/div[4]/div[1]''').is_displayed())
+            WebDriverWait(driver, 10).until(lambda the_driver: the_driver.find_element_by_xpath('''//*[@id="item-rank-0"]''').is_displayed())
         if flag == 2:
             WebDriverWait(driver, 10).until(lambda the_driver: the_driver.find_element_by_xpath('''//*[@id="main-container"]/div[2]''').is_displayed())
         if flag == 4:
